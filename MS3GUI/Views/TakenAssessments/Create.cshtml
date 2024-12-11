@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+
+@model MS3GUI.Models.TakenAssessment
+
+@{
+    ViewData["Title"] = "Create Taken Assessment";
+}
+
+<h1>Create Taken Assessment</h1>
+
+<h4>Taken Assessment</h4>
+<hr />
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label for="Score">Score</label>
+        <input type="number" class="form-control" id="Score" name="Score" value="@Model.Score" required />
+    </div>
+    <div class="form-group">
+        <label for="LearnerId">Learner</label>
+        <select class="form-control" id="LearnerId" name="LearnerId" required>
+            <option value="">Select Learner</option>
+            @foreach (var learner in ViewData["LearnerId"] as IEnumerable<SelectListItem>)
+            {
+                <option value="@learner.Value">@learner.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="AssessmentId">Assessment</label>
+        <select class="form-control" id="AssessmentId" name="AssessmentId" required>
+            <option value="">Select Assessment</option>
+            @foreach (var assessment in ViewData["AssessmentId"] as IEnumerable<SelectListItem>)
+            {
+                <option value="@assessment.Value">@assessment.Text</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
+</form>
+</html>
+
+@*@model MS3GUI.Models.TakenAssessment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TakenAssessment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LearnerId" class="control-label"></label>
+                <select asp-for="LearnerId" class ="form-control" asp-items="ViewBag.LearnerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssessmentId" class="control-label"></label>
+                <select asp-for="AssessmentId" class ="form-control" asp-items="ViewBag.AssessmentId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@

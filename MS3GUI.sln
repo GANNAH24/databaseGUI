@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS3GUI", "MS3GUI\MS3GUI.csproj", "{F1F5601D-E58A-4924-A42A-1D958D92E561}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1F5601D-E58A-4924-A42A-1D958D92E561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1F5601D-E58A-4924-A42A-1D958D92E561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1F5601D-E58A-4924-A42A-1D958D92E561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1F5601D-E58A-4924-A42A-1D958D92E561}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51893675-CAD4-4EE5-A09A-B711AB45E07F}
+	EndGlobalSection
+EndGlobal
