@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MS3GUI.Models;
 using System;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DatabaseProjectContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\wwwroot");
+//builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\Program.cs");
 
 var app = builder.Build();
 
