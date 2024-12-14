@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MS3GUI.Models;
 
 namespace MS3GUI.Models;
 
@@ -1059,4 +1060,6 @@ public partial class DatabaseProjectContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<MS3GUI.Models.User> User { get; set; } = default!;
 }

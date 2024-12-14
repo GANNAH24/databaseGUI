@@ -12,6 +12,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 //builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\wwwroot");
 //builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\Program.cs");
 
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 
