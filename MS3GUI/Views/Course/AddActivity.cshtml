@@ -1,0 +1,41 @@
+﻿@model MS3GUI.Models.LearningActivity
+
+@{
+    ViewData["Title"] = "Add Activity";
+}
+
+<h1>Add New Activity</h1>
+
+<!-- Form starts here -->
+<form asp-action="AddActivity" method="post">
+    <!-- Hidden fields to pass CourseId and ModuleId -->
+    <input type="hidden" asp-for="ModuleId" value="@ViewBag.ModuleId" />
+    <input type="hidden" asp-for="CourseId" value="@ViewBag.CourseId" />
+
+    <!-- Activity Type input field -->
+    <div class="form-group">
+        <label asp-for="ActivityType" class="control-label">Activity Type</label>
+        <input asp-for="ActivityType" class="form-control" />
+        <span asp-validation-for="ActivityType" class="text-danger"></span>
+    </div>
+
+    <!-- Instruction Details input field -->
+    <div class="form-group">
+        <label asp-for="InstructionDetails" class="control-label">Instruction Details</label>
+        <textarea asp-for="InstructionDetails" class="form-control"></textarea>
+        <span asp-validation-for="InstructionDetails" class="text-danger"></span>
+    </div>
+
+    <!-- Max Points input field -->
+    <div class="form-group">
+        <label asp-for="MaxPoints" class="control-label">Max Points</label>
+        <input asp-for="MaxPoints" class="form-control" />
+        <span asp-validation-for="MaxPoints" class="text-danger"></span>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-success">Create Activity</button>
+
+    <!-- Cancel button (to go back to Modules page) -->
+    <a asp-action="Modules" asp-route-courseId="@ViewBag.CourseId" class="btn btn-secondary">Cancel</a>
+</form>

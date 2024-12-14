@@ -631,9 +631,11 @@ public partial class DatabaseProjectContext : DbContext
 
             entity.Property(e => e.ActivityId).HasColumnName("ActivityID");
             entity.Property(e => e.ActivityType)
+            .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("activity_type");
+
             entity.Property(e => e.CourseId).HasColumnName("CourseID");
             entity.Property(e => e.InstructionDetails)
                 .HasMaxLength(50)
