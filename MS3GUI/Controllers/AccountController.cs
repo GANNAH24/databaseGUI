@@ -59,29 +59,34 @@ namespace MS3GUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Execute AddLearner stored procedure
                 var parameters = new[]
                 {
-                    new SqlParameter("@FirstName", model.FirstName),
-                    new SqlParameter("@LastName", model.LastName),
-                    new SqlParameter("@Gender", model.Gender),
-                    new SqlParameter("@BirthDate", model.BirthDate),
-                    new SqlParameter("@Country", model.Country),
-                    new SqlParameter("@CulturalBackground", model.CulturalBackground),
-                    new SqlParameter("@Email", model.Email)
-                };
+            new SqlParameter("@FirstName", model.FirstName),
+            new SqlParameter("@LastName", model.LastName),
+            new SqlParameter("@Gender", model.Gender),
+            new SqlParameter("@BirthDate", model.BirthDate),
+            new SqlParameter("@Country", model.Country),
+            new SqlParameter("@CulturalBackground", model.CulturalBackground),
+            new SqlParameter("@Email", model.Email),
+            new SqlParameter("@Password", model.Password)
+        };
 
-                await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC AddLearner @FirstName, @LastName, @Gender, @BirthDate, @Country, @CulturalBackground, @Email", parameters
-                );
+                // Call stored procedure and get the result
+                var result = await _context.Set<StatusMessage>().FromSqlRaw(
+                    "EXEC AddLearner @FirstName, @LastName, @Gender, @BirthDate, @Country, @CulturalBackground, @Email, @Password",
+                    parameters
+                ).ToListAsync();
 
-                // Redirect to the profile page after successful registration
-                return RedirectToAction("Profile", new { email = model.Email });
+                string message = result.FirstOrDefault()?.Message ?? "An unexpected error occurred.";
+                TempData["StatusMessage"] = message;
+
+                return RedirectToAction("Login");
             }
 
-            // If the form is not valid, return to the same page with errors
+            // If form is invalid, return to view with model errors
             return View(model);
         }
+
 
         // This action handles Instructor Registration submission (POST)
         [HttpPost]
@@ -118,5 +123,48 @@ namespace MS3GUI.Controllers
             ViewData["Email"] = email;
             return View();
         }
+
+
+
+        public IActionResult Login(string email, string password)
+        {
+            // Query the Learner table to find a matching email and password
+            var learner = _context.Learners
+                .FirstOrDefault(l => l.Email == email && l.Password == password);
+
+            if (learner != null)
+            {
+                // Successful login, redirect to profile or dashboard
+                return RedirectToAction("Profile", new { email = learner.Email });
+            }
+
+            // If no match is found, show an error message
+            ViewData["ErrorMessage"] = "Invalid email or password.";
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var learner = _context.Learners
+                    .FirstOrDefault(l => l.Email == model.Email && l.Password == model.Password);
+
+                if (learner != null)
+                {
+                    return RedirectToAction("Profile", new { email = learner.Email });
+                }
+
+                ViewData["ErrorMessage"] = "Invalid email or password.";
+            }
+
+            return View(model);
+        }
+
+
+
+
     }
 }

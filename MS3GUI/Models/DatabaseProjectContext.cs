@@ -54,6 +54,7 @@ public partial class DatabaseProjectContext : DbContext
     public virtual DbSet<Leaderboard> Leaderboards { get; set; }
 
     public virtual DbSet<Learner> Learners { get; set; }
+    public virtual DbSet<StatusMessage> StatusMessages { get; set; }
 
     public virtual DbSet<LearnerDiscussion> LearnerDiscussions { get; set; }
 
@@ -109,6 +110,14 @@ public partial class DatabaseProjectContext : DbContext
  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        base.OnModelCreating(modelBuilder);
+
+        // Mark StatusMessage as a keyless entity
+        modelBuilder.Entity<StatusMessage>().HasNoKey();
+
+
+
         modelBuilder.Entity<Achievement>(entity =>
         {
             entity.HasKey(e => e.AchievementId).HasName("PK__Achievem__276330E086205D83");

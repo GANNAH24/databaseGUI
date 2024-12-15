@@ -18,6 +18,8 @@ public partial class Learner
     public string? Country { get; set; }
 
     public string? CulturalBackground { get; set; }
+    public string Email { get; set; }  // Ensure this exists
+    public string Password { get; set; }
 
     public virtual ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();
 

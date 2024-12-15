@@ -1,7 +1,18 @@
 ﻿@model MS3GUI.Models.RegisterViewModel
 
 <h2>Register as Learner</h2>
-
+<!-- Display the status message if it exists -->
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["StatusMessage"]
+    </div>
+}
+   </div>
+}
+<form asp-action="Login" method="get">
+    <button type="submit" class="btn btn-primary">Log In</button>
+</form>
 <form method="post" asp-action="RegisterLearner">
     <div class="form-group">
         <label asp-for="FirstName">First Name</label>
@@ -43,6 +54,11 @@
         <label asp-for="Email">Email</label>
         <input type="email" asp-for="Email" class="form-control" required />
         <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" required />
+
     </div>
 
     <button type="submit" class="btn btn-primary">Register</button>

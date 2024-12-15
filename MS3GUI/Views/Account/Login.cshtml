@@ -1,0 +1,29 @@
+﻿@model MS3GUI.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<!-- Display the status message if it exists -->
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="Email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="Password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Log in</button>
+</form>
+
