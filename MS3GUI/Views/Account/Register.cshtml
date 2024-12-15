@@ -1,0 +1,156 @@
+﻿@model MS3GUI.Models.RegisterViewModel
+
+<h2>Register</h2>
+
+<!-- Role selection -->
+<div id="roleSelection">
+    <form asp-action="RegisterRole" method="post">
+        <button type="submit" name="role" value="Learner">Register as Learner</button>
+        <button type="submit" name="role" value="Instructor">Register as Instructor</button>
+    </form>
+</div>
+
+<!-- Role-based form display -->
+@if (ViewData["Role"] != null)
+{
+    var selectedRole = ViewData["Role"].ToString();
+
+    if (selectedRole == "Learner")
+    {
+        <form asp-action="Register" method="post">
+            <div>
+                <label for="FirstName">First Name</label>
+                <input type="text" id="FirstName" name="FirstName" required />
+            </div>
+            <div>
+                <label for="LastName">Last Name</label>
+                <input type="text" id="LastName" name="LastName" required />
+            </div>
+            <div>
+                <label for="Gender">Gender</label>
+                <input type="text" id="Gender" name="Gender" required />
+            </div>
+            <div>
+                <label for="BirthDate">Birth Date</label>
+                <input type="date" id="BirthDate" name="BirthDate" required />
+            </div>
+            <div>
+                <label for="Country">Country</label>
+                <input type="text" id="Country" name="Country" required />
+            </div>
+            <div>
+                <label for="CulturalBackground">Cultural Background</label>
+                <input type="text" id="CulturalBackground" name="CulturalBackground" required />
+            </div>
+            <div>
+                <label for="Email">Email</label>
+                <input type="email" id="Email" name="Email" required />
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    }
+    else if (selectedRole == "Instructor")
+    {
+        <form asp-action="Register" method="post">
+            <div>
+                <label for="InstructorName">Instructor Name</label>
+                <input type="text" id="InstructorName" name="InstructorName" required />
+            </div>
+            <div>
+                @{
+                    ViewData["Title"] = "Register";
+                }
+
+                <h2>@ViewData["Title"]</h2>
+
+                <!-- Role Selection Buttons -->
+                <div>
+                    <button id="learnerBtn" class="btn btn-primary">Register as Learner</button>
+                    <button id="instructorBtn" class="btn btn-secondary">Register as Instructor</button>
+                </div>
+
+                <!-- Learner Form (Initially hidden) -->
+                <div id="learnerForm" style="display:none;">
+                    <h3>Learner Information</h3>
+                    <form method="post" action="@Url.Action("RegisterLearner", "Account")">
+                        <div class="form-group">
+                            <label for="FirstName">First Name:</label>
+                            <input type="text" id="FirstName" name="FirstName" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="LastName">Last Name:</label>
+                            <input type="text" id="LastName" name="LastName" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Gender">Gender:</label>
+                            <input type="text" id="Gender" name="Gender" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="BirthDate">Birth Date:</label>
+                            <input type="date" id="BirthDate" name="BirthDate" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Country">Country:</label>
+                            <input type="text" id="Country" name="Country" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="CulturalBackground">Cultural Background:</label>
+                            <input type="text" id="CulturalBackground" name="CulturalBackground" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+
+                <!-- Instructor Form (Initially hidden) -->
+                <div id="instructorForm" style="display:none;">
+                    <h3>Instructor Information</h3>
+                    <form method="post" action="@Url.Action("RegisterInstructor", "Account")">
+                        <div class="form-group">
+                            <label for="InstructorName">Instructor Name:</label>
+                            <input type="text" id="InstructorName" name="InstructorName" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="LatestQualification">Latest Qualification:</label>
+                            <input type="text" id="LatestQualification" name="LatestQualification" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="ExpertiseArea">Expertise Area:</label>
+                            <input type="text" id="ExpertiseArea" name="ExpertiseArea" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email:</label>
+                            <input type="email" id="Email" name="Email" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+
+                <script>
+                    // Show Learner form and hide Instructor form when Learner button is clicked
+                    document.getElementById("learnerBtn").addEventListener("click", function() {
+                        document.getElementById("learnerForm").style.display = "block";
+                        document.getElementById("instructorForm").style.display = "none";
+                    });
+
+                    // Show Instructor form and hide Learner form when Instructor button is clicked
+                    document.getElementById("instructorBtn").addEventListener("click", function() {
+                        document.getElementById("instructorForm").style.display = "block";
+                        document.getElementById("learnerForm").style.display = "none";
+                    });
+                </script>
+
+                <label for="LatestQualification">Latest Qualification</label>
+                <input type="text" id="LatestQualification" name="LatestQualification" required />
+            </div>
+            <div>
+                <label for="ExpertiseArea">Expertise Area</label>
+                <input type="text" id="ExpertiseArea" name="ExpertiseArea" required />
+            </div>
+            <div>
+                <label for="Email">Email</label>
+                <input type="email" id="Email" name="Email" required />
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    }
+}
