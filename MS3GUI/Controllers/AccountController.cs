@@ -75,8 +75,8 @@ namespace MS3GUI.Controllers
                     "EXEC AddLearner @FirstName, @LastName, @Gender, @BirthDate, @Country, @CulturalBackground, @Email", parameters
                 );
 
-                // Redirect to a success page or home
-                return RedirectToAction("Index", "Home");
+                // Redirect to the profile page after successful registration
+                return RedirectToAction("Profile", new { email = model.Email });
             }
 
             // If the form is not valid, return to the same page with errors
@@ -108,6 +108,15 @@ namespace MS3GUI.Controllers
 
             // If the form is not valid, return to the same page with errors
             return View(model);
+        }
+
+        // This action displays the user's profile
+        public IActionResult Profile(string email)
+        {
+            // Retrieve the user profile based on the email
+            // For demonstration, we will just pass the email to the view
+            ViewData["Email"] = email;
+            return View();
         }
     }
 }
