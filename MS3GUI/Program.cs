@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MS3GUI.Models;
 using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,20 @@ builder.Services.AddDbContext<DatabaseProjectContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\wwwroot");
 //builder.WebHost.UseWebRoot(@"C:\Users\fosam\source\repos\databaseGUi\MS3GUI\Program.cs");
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+// Configure authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 var app = builder.Build();
 
 

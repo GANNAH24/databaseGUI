@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Data.SqlClient;
@@ -65,6 +66,7 @@ namespace MS3GUI.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var parameters = new[]
                 {
             new SqlParameter("@FirstName", model.FirstName),
@@ -128,12 +130,39 @@ namespace MS3GUI.Controllers
 
         // This action displays the user's profile
         // Profile Page (GET)
-        public IActionResult Profile(string email)
+        //public IActionResult Profile(string email)
+        //{
+        //    // Pass the email to the ViewData to display user-specific information on the profile page
+        //    ViewData["Email"] = email;
+        //    return View();
+        //}
+
+        public async Task<IActionResult> Profile(string email)
         {
             // Pass the email to the ViewData to display user-specific information on the profile page
             ViewData["Email"] = email;
+
+            // Check if the logged-in user is an admin
+            var admin = await _context.Admin.FirstOrDefaultAsync(a => a.Email.ToLower() == email.ToLower());
+            if (admin != null)
+            {
+                // Load the list of instructors
+                var instructors = await _context.Instructors
+                    .Select(i => new
+                    {
+                        i.InstructorId,
+                        InstructorName = i.InstructorName ?? "N/A", // Handle null values
+                        Email = i.Email ?? "N/A" // Handle null values
+                    })
+                    .ToListAsync();
+
+                ViewData["Instructors"] = instructors;
+            }
+
             return View();
         }
+
+
 
         // Login Page (GET)
         [HttpGet]
@@ -342,6 +371,23 @@ namespace MS3GUI.Controllers
           }*/
 
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteInstructor(int instructorId)
+        {
+            var instructor = await _context.Instructors.FindAsync(instructorId);
+            if (instructor == null)
+            {
+                TempData["StatusMessage"] = "Instructor not found.";
+                return RedirectToAction("Profile", new { email = User.Identity.Name });
+            }
+
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
+
+            TempData["StatusMessage"] = "Instructor account has been permanently removed.";
+            return RedirectToAction("Profile", new { email = User.Identity.Name });
+        }
 
 
     }

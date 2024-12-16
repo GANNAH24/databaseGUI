@@ -8,11 +8,7 @@
         @TempData["StatusMessage"]
     </div>
 }
-   </div>
-}
-<form asp-action="Login" method="get">
-    <button type="submit" class="btn btn-primary">Log In</button>
-</form>
+
 <form method="post" asp-action="RegisterLearner">
     <div class="form-group">
         <label asp-for="FirstName">First Name</label>
@@ -55,11 +51,20 @@
         <input type="email" asp-for="Email" class="form-control" required />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-    <div>
-        <label for="Password">Password</label>
-        <input type="password" id="Password" name="Password" required />
 
+    <div class="form-group">
+        <label asp-for="Password">Password</label>
+        <input type="password" asp-for="Password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
+
+<form asp-action="Login" method="get">
+    <button type="submit" class="btn btn-primary">Log In</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
