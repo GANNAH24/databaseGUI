@@ -1,4 +1,67 @@
-﻿@model MS3GUI.Models.RegisterViewModel
+﻿@model MS3GUI.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<!-- Display the status message if it exists -->
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+<!-- Display login error message -->
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model MS3GUI.Models.RegisterViewModel
 @{
     ViewData["Title"] = "Login";
 }
@@ -25,5 +88,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Log in</button>
-</form>
+</form> *@
 

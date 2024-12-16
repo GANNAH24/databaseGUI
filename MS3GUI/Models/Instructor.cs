@@ -15,6 +15,8 @@ public partial class Instructor
 
     public string? Email { get; set; }
 
+    public string Password { get; set; }
+
     public virtual ICollection<EmotionalfeedbackReview> EmotionalfeedbackReviews { get; set; } = new List<EmotionalfeedbackReview>();
 
     public virtual ICollection<Pathreview> Pathreviews { get; set; } = new List<Pathreview>();

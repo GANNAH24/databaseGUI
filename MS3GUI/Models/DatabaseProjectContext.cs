@@ -17,6 +17,8 @@ public partial class DatabaseProjectContext : DbContext
     {
     }
 
+
+    public DbSet<Admin> Admin { get; set; }
     public virtual DbSet<Achievement> Achievements { get; set; }
 
     public virtual DbSet<Assessment> Assessments { get; set; }
@@ -112,6 +114,9 @@ public partial class DatabaseProjectContext : DbContext
     {
 
         base.OnModelCreating(modelBuilder);
+
+
+        modelBuilder.Entity<Admin>().ToTable("Admin");
 
         // Mark StatusMessage as a keyless entity
         modelBuilder.Entity<StatusMessage>().HasNoKey();

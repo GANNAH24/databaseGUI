@@ -1,0 +1,29 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "RegisterAdmin";
+}
+
+<h1>RegisterAdmin</h1>
+
+<form asp-action="RegisterAdmin" method="post">
+    <div class="form-group">
+        <label for="AdminName">Admin Name</label>
+        <input type="text" id="AdminName" name="AdminName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+
+
+<form asp-action="Login" method="get">
+    <button type="submit" class="btn btn-primary">Log In</button>
+</form>
