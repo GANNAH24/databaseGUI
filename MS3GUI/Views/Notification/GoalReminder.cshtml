@@ -1,0 +1,19 @@
+﻿<!-- File: Views/Notification/GoalReminder.cshtml -->
+@model IEnumerable<MS3GUI.Models.GoalReminder>
+
+<h2>Goal Reminders</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reminder in Model)
+        {
+            <tr>
+                <td>@reminder.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -43,6 +43,7 @@ public partial class DatabaseProjectContext : DbContext
 
     public virtual DbSet<FilledSurvey> FilledSurveys { get; set; }
 
+
     public virtual DbSet<HealthCondition> HealthConditions { get; set; }
 
     public virtual DbSet<HighestGrade> HighestGrades { get; set; }
@@ -104,24 +105,21 @@ public partial class DatabaseProjectContext : DbContext
 
     public virtual DbSet<TargetTrait> TargetTraits { get; set; }
 
-     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-          => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=DatabaseProject;Trusted_Connection=True;");
-    
 
- 
+    public virtual DbSet<GoalReminder> GoalReminders { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=DatabaseProject;Trusted_Connection=True;");
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        base.OnModelCreating(modelBuilder);
-
-
-        modelBuilder.Entity<Admin>().ToTable("Admin");
-
-        // Mark StatusMessage as a keyless entity
+        modelBuilder.Entity<GoalReminder>().HasNoKey();
         modelBuilder.Entity<StatusMessage>().HasNoKey();
 
-
+        modelBuilder.Entity<Admin>().ToTable("Admin");
 
         modelBuilder.Entity<Achievement>(entity =>
         {
