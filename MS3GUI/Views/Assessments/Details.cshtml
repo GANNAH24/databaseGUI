@@ -1,34 +1,4 @@
-﻿<!DOCTYPE html>
-<html>
-    <body>
-@model MS3GUI.Models.Assessment
-
-<h2>Assessment Details</h2>
-
-<div>
-    <p>Title: @Model.Title</p>
-    <p>Total Marks: @Model.TotalMarks</p>
-    <p>Module: @Model.Module?.Title</p> <!-- Display module title -->
-    <p>Course: @Model.Course?.Title</p> <!-- Display course name -->
-    <p>Assessment Type: @Model.Atype</p>
-    <p>Passing Marks: @Model.PassingMarks</p>
-    <p>Criteria: @Model.Criteria</p>
-    <p>Weightage: @Model.Weightage</p>
-    <p>Description: @Model.Adescription</p>
-</div>
-
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
-
-</body>
-
-</html>
-
-
-@*@model MS3GUI.Models.Assessment
-
-@{
-    ViewData["Title"] = "Details";
-}
+﻿@model MS3GUI.Models.Assessment
 
 <h1>Details</h1>
 
@@ -36,58 +6,25 @@
     <h4>Assessment</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Atype)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Atype)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalMarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalMarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PassingMarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PassingMarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Criteria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Criteria)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Weightage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Weightage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Adescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Adescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Module)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Module.ModuleId)
-        </dd>
+        <dt class="col-sm-2">Type</dt>
+        <dd class="col-sm-10">@Model.Atype</dd>
+        <dt class="col-sm-2">Total Marks</dt>
+        <dd class="col-sm-10">@Model.TotalMarks</dd>
+        <dt class="col-sm-2">Passing Marks</dt>
+        <dd class="col-sm-10">@Model.PassingMarks</dd>
+        <dt class="col-sm-2">Criteria</dt>
+        <dd class="col-sm-10">@Model.Criteria</dd>
+        <dt class="col-sm-2">Weightage</dt>
+        <dd class="col-sm-10">@Model.Weightage</dd>
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Adescription</dd>
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10">@Model.Title</dd>
+        <dt class="col-sm-2">Module</dt>
+        <dd class="col-sm-10">@Model.Module?.Title</dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-*@

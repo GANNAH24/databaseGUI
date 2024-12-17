@@ -1,38 +1,4 @@
-﻿<!DOCTYPE html>
-
-@model IEnumerable<MS3GUI.Models.TakenAssessment>
-
-<h2>Your Assessments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Assessment Title</th>
-            <th>Score</th>
-            <th>View Details</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Assessment.Title</td>
-                <td>@item.Score</td>
-                <td>
-                    <a href="@Url.Action("Details", "TakenAssessments", new { id = item.AssessmentId })">View</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-</html>
-
-@*
-@model IEnumerable<MS3GUI.Models.TakenAssessment>
-
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<MS3GUI.Models.TakenAssessment>
 
 <h1>Index</h1>
 
@@ -42,37 +8,27 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Assessment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Learner)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.AssessmentId)</th>
+            <th>@Html.DisplayNameFor(model => model.LearnerId)</th>
+            <th>@Html.DisplayNameFor(model => model.Score)</th>
+
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.AssessmentId)</td>
+                <td>@Html.DisplayFor(modelItem => item.LearnerId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Score)</td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Score)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Assessment.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Learner.LearnerId)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a asp-action="Edit" asp-route-id="@item.AssessmentId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AssessmentId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AssessmentId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-*@

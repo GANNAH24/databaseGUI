@@ -1,0 +1,40 @@
+﻿@* @model ModulesViewModel *@
+
+@model MS3GUI.Models.ModulesViewModel
+
+<h2>Modules for @Model.CourseTitle</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Module Title</th>
+            <th>Difficulty</th>
+            <th>Content URL</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var module in Model.Modules)
+        {
+            <tr>
+                <td>@module.Title</td>
+                <td>@module.Difficulty</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(module.ContentUrl))
+                    {
+                        <a href="@module.ContentUrl" target="_blank">View Content</a>
+                    }
+                    else
+                    {
+                        <span>No content available</span>
+                    }
+                </td>
+                <td>
+                    <!-- Add Activity link dynamically passes CourseId and ModuleId -->
+                    <a href="@Url.Action("AddActivity", "Courses", new { moduleId = module.ModuleId, courseId = Model.CourseId })"
+                       class="btn btn-primary">Add Activity</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

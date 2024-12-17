@@ -1,0 +1,52 @@
+﻿@model MS3GUI.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Instructor Profile";
+}
+
+
+
+<h2>Instructor Profile</h2>
+
+<div>
+    <label>Instructor Name:</label>
+    <span>@Model.InstructorName</span>
+</div>
+<div>
+    <label>Latest Qualification:</label>
+    <span>@Model.LatestQualification</span>
+</div>
+<div>
+    <label>Expertise Area:</label>
+    <span>@Model.ExpertiseArea</span>
+</div>
+<div>
+    <label>Email:</label>
+    <span>@Model.Email</span>
+</div>
+
+
+<form asp-action="EditInstructorProfile" method="post">
+    <div class="form-group">
+        <label asp-for="InstructorName"></label>
+        <input asp-for="InstructorName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LatestQualification"></label>
+        <input asp-for="LatestQualification" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ExpertiseArea"></label>
+        <input asp-for="ExpertiseArea" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<form asp-action="DeleteInstructorProfile" method="post" onsubmit="return confirm('Are you sure you want to delete your profile?');">
+    <button type="submit" class="btn btn-danger">Delete Profile</button>
+</form>
+

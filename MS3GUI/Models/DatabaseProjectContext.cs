@@ -17,6 +17,7 @@ public partial class DatabaseProjectContext : DbContext
     {
     }
 
+    public DbSet<CourseEnrollment> Course_enrollment { get; set; } // This should match your table name
 
     public DbSet<Admin> Admin { get; set; }
     public virtual DbSet<Achievement> Achievements { get; set; }

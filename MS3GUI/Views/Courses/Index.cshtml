@@ -4,7 +4,70 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Courses</h1>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LearningObjective)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditPoints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DifficultyLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cdescription)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.LearningObjective</td>
+                <td>@course.CreditPoints</td>
+                <td>@course.DifficultyLevel</td>
+                <td>@course.Cdescription</td>
+                <td>
+                    <!-- Link to view modules -->
+                    <a href="@Url.Action("Modules", "Courses", new { id = course.CourseId })" class="btn btn-primary">View Modules</a>
+                    <!-- Link to view previous courses -->
+                    <a href="@Url.Action("ViewPreviousCourses", "Courses", new { courseId = course.CourseId })" class="btn btn-info">Previous Courses</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+@* @model IEnumerable<MS3GUI.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -57,3 +120,4 @@
 }
     </tbody>
 </table>
+ *@

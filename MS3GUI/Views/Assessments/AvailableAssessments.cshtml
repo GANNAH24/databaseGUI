@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MS3GUI.Models.Assessment>
+
+@{
+    ViewData["Title"] = "Available Assessments";
+}
+
+<h2>Available Assessments</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Total Marks</th>
+            <th>Passing Marks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assessment in Model)
+        {
+            <tr>
+                <td>@assessment.Title</td>
+                <td>@assessment.Adescription</td>
+                <td>@assessment.TotalMarks</td>
+                <td>@assessment.PassingMarks</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@assessment.Id" class="btn btn-info">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

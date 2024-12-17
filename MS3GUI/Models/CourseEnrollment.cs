@@ -5,19 +5,17 @@ namespace MS3GUI.Models;
 
 public partial class CourseEnrollment
 {
-    public int EnrollmentId { get; set; }
+    public int EnrollmentId { get; set; } // Primary Key
 
-    public int? CourseId { get; set; }
+    public int? CourseId { get; set; } // Nullable Foreign key to Course
+    public int? LearnerId { get; set; } // Nullable Foreign key to Learner
 
-    public int? LearnerId { get; set; }
+    public DateOnly? CompletionDate { get; set; } // Nullable CompletionDate
+    public DateOnly? EnrollmentDate { get; set; } // Nullable EnrollmentDate
 
-    public DateOnly? CompletionDate { get; set; }
+    public string? Status { get; set; } // Nullable Status
 
-    public DateOnly? EnrollmentDate { get; set; }
-
-    public string? Status { get; set; }
-
+    // Navigation properties to related entities
     public virtual Course? Course { get; set; }
-
     public virtual Learner? Learner { get; set; }
 }

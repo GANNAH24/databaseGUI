@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MS3GUI.Models.Course>
+
+<h1>Enroll in Course</h1>
+
+<form method="post">
+    <div>
+        <label for="CourseId">Course</label>
+        <select id="CourseId" name="CourseId">
+            @foreach (var course in Model)
+            {
+                <option value="@course.CourseId">@course.Title</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit">Enroll</button>
+</form>

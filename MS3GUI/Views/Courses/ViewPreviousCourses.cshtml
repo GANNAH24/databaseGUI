@@ -1,0 +1,50 @@
+﻿@model IEnumerable<dynamic>
+@{
+    var prerequisitesStatus = ViewData["PrerequisitesStatus"] as string;
+}
+
+<h2>Prerequisites for @Model.FirstOrDefault()?.Title</h2>
+
+<p>@prerequisitesStatus</p> <!-- Show prerequisites completion status -->
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Course Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td> <!-- Displaying only the course title now -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+@* @model IEnumerable<dynamic>
+
+<h2>Prerequisites for @Model.FirstOrDefault()?.Title</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Course Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td> <!-- Displaying only the course title now -->
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MS3GUI.Models.Notification>
+
+<h2>Admin Notifications</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Message</th>
+            <th>Urgency</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var notification in Model)
+        {
+            <tr>
+                <td>@notification.Ntimestamp?.ToString("dd MMM yyyy")</td>
+                <td>@notification.Nmessage</td>
+                <td>@notification.UrgencyLevel</td>
+                <td>@(notification.ReadStatus == true ? "Read" : "Unread")</td>
+                <td>
+                    @if (notification.ReadStatus == false)
+                    {
+                        <form method="post" action="@Url.Action("MarkAsRead", "Notification", new { id = notification.NotificationId })">
+                            <button type="submit" class="btn btn-primary">Mark as Read</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>Already Marked as Read</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
