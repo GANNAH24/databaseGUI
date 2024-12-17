@@ -66,16 +66,15 @@ namespace MS3GUI.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var parameters = new[]
                 {
-            new SqlParameter("@FirstName", model.FirstName),
-            new SqlParameter("@LastName", model.LastName),
-            new SqlParameter("@Gender", model.Gender),
-            new SqlParameter("@BirthDate", model.BirthDate),
-            new SqlParameter("@Country", model.Country),
-            new SqlParameter("@CulturalBackground", model.CulturalBackground),
-            new SqlParameter("@Email", model.Email),
+            new SqlParameter("@FirstName", model.FirstName ?? (object)DBNull.Value),
+            new SqlParameter("@LastName", model.LastName ?? (object)DBNull.Value),
+            new SqlParameter("@Gender", model.Gender ?? (object)DBNull.Value),
+            new SqlParameter("@BirthDate", model.BirthDate.HasValue ? model.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (object)DBNull.Value),
+            new SqlParameter("@Country", model.Country ?? (object)DBNull.Value),
+            new SqlParameter("@CulturalBackground", model.CulturalBackground ?? (object)DBNull.Value),
+            new SqlParameter("@Email", model.Email ?? (object)DBNull.Value),
             new SqlParameter("@Password", model.Password)
         };
 
@@ -96,22 +95,19 @@ namespace MS3GUI.Controllers
         }
 
 
-        // This action handles Instructor Registration submission (POST)
         [HttpPost]
         public async Task<IActionResult> RegisterInstructor(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Execute AddInstructor stored procedure
                 var parameters = new[]
                 {
-                    new SqlParameter("@InstructorName", model.InstructorName),
-                    new SqlParameter("@LatestQualification", model.LatestQualification),
-                    new SqlParameter("@ExpertiseArea", model.ExpertiseArea),
-                    new SqlParameter("@Email", model.Email),
-                    new SqlParameter("@Password", model.Password)
-
-                };
+            new SqlParameter("@InstructorName", model.InstructorName ?? (object)DBNull.Value),
+            new SqlParameter("@LatestQualification", model.LatestQualification ?? (object)DBNull.Value),
+            new SqlParameter("@ExpertiseArea", model.ExpertiseArea ?? (object)DBNull.Value),
+            new SqlParameter("@Email", model.Email ?? (object)DBNull.Value),
+            new SqlParameter("@Password", model.Password)
+        };
 
                 var result = await _context.Set<StatusMessage>().FromSqlRaw(
                     "EXEC AddInstructor @InstructorName, @LatestQualification, @ExpertiseArea, @Email, @Password",
@@ -127,6 +123,7 @@ namespace MS3GUI.Controllers
             // If the form is not valid, return to the same page with errors
             return View(model);
         }
+
 
         // This action displays the user's profile
         // Profile Page (GET)

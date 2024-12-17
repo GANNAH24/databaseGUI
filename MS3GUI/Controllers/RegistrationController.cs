@@ -1,62 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+using MS3GUI.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace MS3GUI.Controllers
 {
     public class RegistrationController : Controller
     {
-        private readonly string _connectionString = "YourConnectionStringHere";
+        private readonly DatabaseProjectContext _context;
+
+        public RegistrationController(DatabaseProjectContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        // Submit the user form data
         [HttpPost]
-        public IActionResult Submit(string role, string firstName, string lastName, string gender, string birthDate, string country, string culturalBackground, string qualification, string expertise, string email)
+        public async Task<IActionResult> Submit(string role, string firstName, string lastName, string gender, DateTime birthDate, string country, string culturalBackground, string qualification, string expertise, string email, string password)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            if (role == "learner")
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
+                var learner = new Learner
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Gender = gender,
+                    BirthDate = DateOnly.FromDateTime(birthDate), // Convert DateTime to DateOnly
+                    Country = country,
+                    CulturalBackground = culturalBackground,
+                    Email = email,
+                    Password = password
+                };
 
-                if (role == "learner")
+                _context.Learners.Add(learner);
+            }
+            else if (role == "instructor")
+            {
+                var instructor = new Instructor
                 {
-                    // Call the stored procedure to add a learner
-                    cmd = new SqlCommand("AddLearner", conn);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@first_name", firstName);
-                    cmd.Parameters.AddWithValue("@last_name", lastName);
-                    cmd.Parameters.AddWithValue("@gender", gender);
-                    cmd.Parameters.AddWithValue("@birth_date", birthDate);
-                    cmd.Parameters.AddWithValue("@country", country);
-                    cmd.Parameters.AddWithValue("@cultural_background", culturalBackground);
-                }
-                else if (role == "instructor")
-                {
-                    // Call the stored procedure to add an instructor
-                    cmd = new SqlCommand("AddInstructor", conn);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@InstructorName", firstName);
-                    cmd.Parameters.AddWithValue("@latest_qualification", qualification);
-                    cmd.Parameters.AddWithValue("@expertise_area", expertise);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                }
+                    InstructorName = firstName,
+                    LatestQualification = qualification,
+                    ExpertiseArea = expertise,
+                    Email = email,
+                    Password = password
+                };
 
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    ViewBag.Message = "Registration successful!";
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Error: " + ex.Message;
-                }
+                _context.Instructors.Add(instructor);
+            }
+            else
+            {
+                ViewBag.Message = "Invalid role specified.";
+                return View("Index");
             }
 
-            return RedirectToAction("Index");
+            try
+            {
+                await _context.SaveChangesAsync();
+                ViewBag.Message = "Registration successful.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Error: " + ex.Message;
+            }
+
+            return View("Index");
         }
-
-
     }
 }
