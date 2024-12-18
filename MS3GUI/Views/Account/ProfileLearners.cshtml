@@ -7,6 +7,7 @@
 <h2>Learner Profile</h2>
 
 <div>
+    <p><strong>Learner ID:</strong> @Model.LearnerId</p>
     <p><strong>First Name:</strong> @Model.FirstName</p>
     <p><strong>Last Name:</strong> @Model.LastName</p>
     <p><strong>Gender:</strong> @Model.Gender</p>
@@ -57,3 +58,9 @@
 <a asp-action="LearnerTakenAssessments" asp-controller="TakenAssessments" asp-route-learnerId="@Model.LearnerId" class="btn btn-info">View My Taken Assessments</a>
 
 
+<a asp-action="EnrolledCourses"
+   asp-controller="Courses"
+   asp-route-learnerId="@Model.LearnerId"
+   class="btn btn-success mt-3">
+    View Enrolled Courses
+</a>
