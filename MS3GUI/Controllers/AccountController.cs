@@ -20,37 +20,80 @@ namespace MS3GUI.Controllers
 
 
 
-
-
-        [HttpGet]
         public async Task<IActionResult> ProfileLearners(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                return BadRequest("Email is required.");
-            }
-
             var learner = await _context.Learners
-                .Where(l => l.Email == email)
-                .Select(l => new ProfileViewModel
-                {
-                    FirstName = l.FirstName,
-                    LastName = l.LastName,
-                    Gender = l.Gender,
-                    BirthDate = l.BirthDate,
-                    Country = l.Country,
-                    CulturalBackground = l.CulturalBackground,
-                    Email = l.Email
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(l => l.Email == email);
 
             if (learner == null)
             {
-                return NotFound("Learner not found.");
+                return NotFound();
             }
 
-            return View(learner);
+            var model = new ProfileViewModel
+            {
+                LearnerId = learner.LearnerId,
+                FirstName = learner.FirstName,
+                LastName = learner.LastName,
+                Gender = learner.Gender,
+                BirthDate = learner.BirthDate,
+                Country = learner.Country,
+                CulturalBackground = learner.CulturalBackground,
+                Email = learner.Email
+            };
+
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteLearnerProfile(string email, int learnerId)
+        {
+            if (string.IsNullOrEmpty(email) || learnerId == 0)
+            {
+                return Content("Email or Learner ID Not Found");
+            }
+
+            var learner = await _context.Learners.FirstOrDefaultAsync(l => l.Email == email && l.LearnerId == learnerId);
+            if (learner == null)
+            {
+                return Content("Email or Learner ID Not Found");
+            }
+
+            _context.Learners.Remove(learner);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // [HttpGet]
+        //public async Task<IActionResult> ProfileLearners(string email)
+        //{
+        //    if (string.IsNullOrEmpty(email))
+        //    {
+        //        return BadRequest("Email is required.");
+        //    }
+
+        //    var learner = await _context.Learners
+        //        .Where(l => l.Email == email)
+        //        .Select(l => new ProfileViewModel
+        //        {
+        //            FirstName = l.FirstName,
+        //            LastName = l.LastName,
+        //            Gender = l.Gender,
+        //            BirthDate = l.BirthDate,
+        //            Country = l.Country,
+        //            CulturalBackground = l.CulturalBackground,
+        //            Email = l.Email
+        //        })
+        //        .FirstOrDefaultAsync();
+
+        //    if (learner == null)
+        //    {
+        //        return NotFound("Learner not found.");
+        //    }
+
+        //    return View(learner);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> ProfileInstructor(string email)
@@ -139,22 +182,22 @@ namespace MS3GUI.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteLearnerProfile(string email)
-        {
-            var learner = await _context.Learners
-                .FirstOrDefaultAsync(l => l.Email == email);
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteLearnerProfile(string email)
+        //{
+        //    var learner = await _context.Learners
+        //        .FirstOrDefaultAsync(l => l.Email == email);
 
-            if (learner == null)
-            {
-                return NotFound();
-            }
+        //    if (learner == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Learners.Remove(learner);
-            await _context.SaveChangesAsync();
+        //    _context.Learners.Remove(learner);
+        //    await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index), "Home");
-        }
+        //    return RedirectToAction(nameof(Index), "Home");
+        //}
 
 
         [HttpPost]
