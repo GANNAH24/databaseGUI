@@ -124,14 +124,6 @@ namespace MS3GUI.Controllers
         [HttpGet]
         public async Task<IActionResult> ProfileInstructor(string email)
         {
-            // Get the instructor's ID from the session
-            var instructorId = HttpContext.Session.GetInt32("InstructorId");
-
-            if (instructorId == null)
-            {
-                return RedirectToAction("RegisterInstructor", "Account"); // Redirect to RegisterInstructor if not authenticated
-            }
-
             if (string.IsNullOrEmpty(email))
             {
                 return BadRequest("Email is required.");
@@ -141,6 +133,7 @@ namespace MS3GUI.Controllers
                 .Where(i => i.Email == email)
                 .Select(i => new ProfileViewModel
                 {
+                    InstructorId = i.InstructorId,
                     InstructorName = i.InstructorName,
                     LatestQualification = i.LatestQualification,
                     ExpertiseArea = i.ExpertiseArea,
@@ -159,14 +152,6 @@ namespace MS3GUI.Controllers
         [HttpGet]
         public async Task<IActionResult> ProfileAdmin(string email)
         {
-            // Get the admin's ID from the session
-            var adminId = HttpContext.Session.GetInt32("AdminId");
-
-            if (adminId == null)
-            {
-                return RedirectToAction("RegisterAdmin", "Account"); // Redirect to login if not authenticated
-            }
-
             if (string.IsNullOrEmpty(email))
             {
                 return BadRequest("Email is required.");
@@ -176,6 +161,7 @@ namespace MS3GUI.Controllers
                 .Where(a => a.Email == email)
                 .Select(a => new ProfileViewModel
                 {
+                    AdminId = a.AdminId,
                     AdminName = a.AdminName,
                     Email = a.Email
                 })
@@ -686,11 +672,11 @@ namespace MS3GUI.Controllers
                     if (instructor != null && instructor.Password == model.Password)
                     {
                         // Store InstructorId in session
-                        HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
+                        //HttpContext.Session.SetInt32("InstructorId", instructor.InstructorId);
 
                         // Successful login for instructor, redirect to the instructor's profile
-                        // return RedirectToAction("ProfileInstructor", new { email = instructor.Email });
-                        return RedirectToAction("ProfileInstructor");
+                         return RedirectToAction("ProfileInstructor", new { email = instructor.Email });
+                        //return RedirectToAction("ProfileInstructor");
                     }
 
                     // Check if the admin exists and the password matches
@@ -700,11 +686,11 @@ namespace MS3GUI.Controllers
                     if (admin != null && admin.Password == model.Password)
                     {
                         // Store AdminId in session
-                        HttpContext.Session.SetInt32("AdminId", admin.AdminId);
+                      //  HttpContext.Session.SetInt32("AdminId", admin.AdminId);
                         // Successful login for admin, redirect to admin's profile
-                        return RedirectToAction("ProfileAdmin");
+                        //return RedirectToAction("ProfileAdmin");
 
-                        //  return RedirectToAction("ProfileAdmin", new { email = admin.Email });
+                          return RedirectToAction("ProfileAdmin", new { email = admin.Email });
                     }
 
                     // If no match, show an error message
