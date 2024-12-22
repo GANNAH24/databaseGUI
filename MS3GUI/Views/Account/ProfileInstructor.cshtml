@@ -52,3 +52,49 @@
     <button type="submit" class="btn btn-danger">Delete Profile</button>
 </form>
 
+
+<form asp-action="CreateDiscussionForum" method="get">
+    <button type="submit" class="btn btn-primary">Create Discussion Forum</button>
+</form>
+
+
+
+<a asp-action="ViewEmotionalReview" asp-controller="EmotionalfeedbackReviewsControllerAdmin" asp-route-instructorId="@Model.InstructorId" class="btn btn-primary">
+    View Emotional Feedback Review
+</a>
+
+
+<a asp-controller="Assessments" asp-action="Index" class="btn btn-info">View Assessments</a>
+
+<a asp-controller="Courses" asp-action="Index" class="btn btn-primary">
+    View Available Courses
+</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using MS3GUI.Models;
 
 namespace MS3GUI.Controllers
@@ -238,6 +239,9 @@ namespace MS3GUI.Controllers
 
         public async Task<IActionResult> EnrolledCourses(int learnerId)
         {
+            var learner = await _context.Learners
+       .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
             var enrolledCourses = await _context.Course_enrollment
                 .Where(ce => ce.LearnerId == learnerId && ce.Status == "Completed")
                 .Join(_context.Courses,
@@ -245,8 +249,9 @@ namespace MS3GUI.Controllers
                       c => c.CourseId,
                       (ce, c) => new EnrolledCoursesViewModel
                       {
+                          LearnerId = learner.LearnerId,
                           EnrollmentId = ce.EnrollmentId,
-                          LearnerId = ce.LearnerId ?? 0,
+                          // LearnerId = ce.LearnerId ?? 0,
                           CourseId = c.CourseId,
                           CourseName = c.Title,
                           EnrollmentDate = ce.EnrollmentDate.HasValue
@@ -327,57 +332,78 @@ namespace MS3GUI.Controllers
 
 
 
+        /*        public async Task<IActionResult> EnrollInCourse()
+                {
+                    var model = new EnrollInCourseViewModel
+                    {
+                        Courses = await _context.Courses.ToListAsync(), // Get all courses
+                        Learners = await _context.Learners.ToListAsync() // Get all learners
+                    };
 
-        [HttpGet]
-        public IActionResult EnrollInCourse()
-        {
-            var courses = _context.Courses.ToList();
-            return View(courses); // Return a list of all courses
-        }
+                    return View(model);
+                }*/
 
-        // GET: /Courses/EnrollInCourse/{learnerId}
-        [HttpGet]
-        public async Task<IActionResult> EnrollInCourse(int learnerId)
-        {
-            var model = new EnrollInCourseViewModel
-            {
-                LearnerId = learnerId,
-                Courses = await _context.Courses.ToListAsync() // Get all available courses
-            };
-            return View(model);
-        }
 
-        // POST: /Courses/EnrollInCourse/{learnerId}
+
+
+
+        /*     var learner = await _context.Learners
+        .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
+             var model = await _context.Course_enrollment
+                 .Where(ce => ce.LearnerId == learnerId && ce.Status == "Completed")
+                 .Join(_context.Courses,
+                       ce => ce.CourseId,
+                       c => c.CourseId,
+                       (ce, c) => new EnrollInCourseViewModel
+                       {
+                           LearnerId = learner.LearnerId,
+                           EnrollmentId = ce.EnrollmentId,
+                           // LearnerId = ce.LearnerId ?? 0,
+                           CourseId = c.CourseId,
+                           CourseName = c.Title,
+                           EnrollmentDate = ce.EnrollmentDate.HasValue
+                                             ? (DateTime?)ce.EnrollmentDate.Value.ToDateTime(new TimeOnly(0, 0))
+                                             : null,
+                           CompletionDate = ce.CompletionDate.HasValue
+                                             ? (DateTime?)ce.CompletionDate.Value.ToDateTime(new TimeOnly(0, 0))
+                                             : null,
+                           Status = ce.Status
+                       }*/
+
         [HttpPost]
-        public async Task<IActionResult> EnrollInCourse(int learnerId, int courseId)
+        public async Task<IActionResult> EnrollInCourse(int courseId)
         {
-            // Check if the learner is already enrolled in the course
-            var existingEnrollment = await _context.CourseEnrollments
-                .FirstOrDefaultAsync(ce => ce.LearnerId == learnerId && ce.CourseId == courseId);
+            // Assuming LearnerId is retrieved from session or authentication
+            var learnerId = 18;
 
-            if (existingEnrollment != null)
+            var learner = await _context.Learners
+                .FirstOrDefaultAsync(l => l.LearnerId == learnerId);
+
+            if (learner == null)
             {
-                // Show a message if already enrolled
-                ViewBag.Message = "You are already enrolled in this course.";
-                return RedirectToAction("EnrolledCourses", new { learnerId });
+                return NotFound();
             }
 
-            // Create new enrollment in Course_enrollment table
-            var newEnrollment = new CourseEnrollment
+            var courseEnrollment = new CourseEnrollment
             {
-                LearnerId = learnerId,
                 CourseId = courseId,
-                EnrollmentDate = DateOnly.FromDateTime(DateTime.Now), // Use DateOnly
+                LearnerId = learnerId,
+                EnrollmentDate = DateOnly.FromDateTime(DateTime.Now),
                 Status = "Enrolled"
             };
 
-            // Save the new enrollment to the Course_enrollment table
-            _context.CourseEnrollments.Add(newEnrollment); // Ensure the table name matches the model
+            _context.Course_enrollment.Add(courseEnrollment);
             await _context.SaveChangesAsync();
 
-            // Redirect to the list of courses the learner is enrolled in
-            return RedirectToAction("EnrolledCourses", new { learnerId });
+            return Json(new { success = true });
         }
+
+
+
+
+
+
     }
 
 
@@ -395,160 +421,3 @@ namespace MS3GUI.Controllers
 
 
 
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.EntityFrameworkCore;
-//using MS3GUI.Models;
-
-//namespace MS3GUI.Controllers
-//{
-//    public class CoursesController : Controller
-//    {
-//        private readonly DatabaseProjectContext _context;
-
-//        public CoursesController(DatabaseProjectContext context)
-//        {
-//            _context = context;
-//        }
-
-//        // GET: Courses
-//        public async Task<IActionResult> Index()
-//        {
-//            return View(await _context.Courses.ToListAsync());
-//        }
-
-//        // GET: Courses/Details/5
-//        public async Task<IActionResult> Details(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
-
-//            var course = await _context.Courses
-//                .FirstOrDefaultAsync(m => m.CourseId == id);
-//            if (course == null)
-//            {
-//                return NotFound();
-//            }
-
-//            return View(course);
-//        }
-
-//        // GET: Courses/Create
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
-
-//        // POST: Courses/Create
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("CourseId,Title,LearningObjective,CreditPoints,DifficultyLevel,Cdescription")] Course course)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                _context.Add(course);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(course);
-//        }
-
-//        // GET: Courses/Edit/5
-//        public async Task<IActionResult> Edit(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
-
-//            var course = await _context.Courses.FindAsync(id);
-//            if (course == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(course);
-//        }
-
-//        // POST: Courses/Edit/5
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(int id, [Bind("CourseId,Title,LearningObjective,CreditPoints,DifficultyLevel,Cdescription")] Course course)
-//        {
-//            if (id != course.CourseId)
-//            {
-//                return NotFound();
-//            }
-
-//            if (ModelState.IsValid)
-//            {
-//                try
-//                {
-//                    _context.Update(course);
-//                    await _context.SaveChangesAsync();
-//                }
-//                catch (DbUpdateConcurrencyException)
-//                {
-//                    if (!CourseExists(course.CourseId))
-//                    {
-//                        return NotFound();
-//                    }
-//                    else
-//                    {
-//                        throw;
-//                    }
-//                }
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(course);
-//        }
-
-//        // GET: Courses/Delete/5
-//        public async Task<IActionResult> Delete(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
-
-//            var course = await _context.Courses
-//                .FirstOrDefaultAsync(m => m.CourseId == id);
-//            if (course == null)
-//            {
-//                return NotFound();
-//            }
-
-//            return View(course);
-//        }
-
-//        // POST: Courses/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            var course = await _context.Courses.FindAsync(id);
-//            if (course != null)
-//            {
-//                _context.Courses.Remove(course);
-//            }
-
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        private bool CourseExists(int id)
-//        {
-//            return _context.Courses.Any(e => e.CourseId == id);
-//        }
-//    }
-//}

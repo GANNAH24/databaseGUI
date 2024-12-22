@@ -14,4 +14,5 @@ public partial class EmotionalfeedbackReview
     public virtual EmotionalFeedback FeedbackNavigation { get; set; } = null!;
 
     public virtual Instructor Instructor { get; set; } = null!;
+    
 }

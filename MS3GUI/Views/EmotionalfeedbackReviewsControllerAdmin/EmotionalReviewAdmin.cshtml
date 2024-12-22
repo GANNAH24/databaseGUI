@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+@model List<MS3GUI.Models.EmotionalfeedbackReview>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Feedback Review</title>
+</head>
+<body>
+    <h1>Emotional Feedback Analysis</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Feedback ID</th>
+                <th>Instructor ID</th>
+                <th>Feedback</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>@review.FeedbackId</td>
+                    <td>@review.InstructorId</td>
+                    <td>@review.Feedback</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EmotionalReviewAdmin</title>
+</head>
+<body>
+</body>
+</html>

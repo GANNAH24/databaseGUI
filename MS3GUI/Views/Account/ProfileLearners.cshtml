@@ -57,6 +57,121 @@
 <a asp-action="AvailableAssessments" asp-controller="Assessments" class="btn btn-info">View Available Assessments</a>
 <a asp-action="LearnerTakenAssessments" asp-controller="TakenAssessments" asp-route-learnerId="@Model.LearnerId" class="btn btn-info">View My Taken Assessments</a>
 
+<a asp-action="EnrolledCourses"
+   asp-controller="Courses"
+   asp-route-learnerId="@Model.LearnerId"
+   class="btn btn-success mt-3">
+    View Enrolled Courses
+</a>
+
+
+<form asp-action="Leaderboard" asp-controller="LearnerLeaderboards" method="get">
+    <input type="hidden" name="learnerID" value="@Model.LearnerId" />
+    <button type="submit" class="btn btn-info mt-3">View Leaderboard</button>
+</form>
+
+
+
+<a asp-action="SubmitFeedback" asp-controller="EmotionalFeedbacksControllerLearner" class="btn btn-info mt-3">Submit Emotional Feedback</a>
+
+
+
+
+<a asp-action="Index" asp-controller="Notification" class="btn btn-primary">
+    View Notifications
+</a>
+
+
+<a asp-controller="Courses" asp-action="Index" class="btn btn-primary">View Available Courses</a>
+<a asp-controller="Courses" asp-action="Index" class="btn btn-success">Enroll in a Course</a>
+
+@section Scripts {
+    <script>
+        document.querySelector('form[asp-action="DeleteLearnerProfile"]').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('@Url.Action("DeleteLearnerProfile", "Account")', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                window.location.href = '@Url.Action("Register", "Account")';
+            } else {
+                alert('Failed to delete profile.');
+            }
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+@* @model MS3GUI.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Learner Profile";
+}
+
+<h2>Learner Profile</h2>
+
+<div>
+    <p><strong>Learner ID:</strong> @Model.LearnerId</p>
+    <p><strong>First Name:</strong> @Model.FirstName</p>
+    <p><strong>Last Name:</strong> @Model.LastName</p>
+    <p><strong>Gender:</strong> @Model.Gender</p>
+    <p><strong>Birth Date:</strong> @Model.BirthDate?.ToString("d")</p>
+    <p><strong>Country:</strong> @Model.Country</p>
+    <p><strong>Cultural Background:</strong> @Model.CulturalBackground</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+</div>
+
+<form asp-action="EditLearnerProfile" method="post">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender"></label>
+        <input asp-for="Gender" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Country"></label>
+        <input asp-for="Country" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CulturalBackground"></label>
+        <input asp-for="CulturalBackground" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<form asp-action="DeleteLearnerProfile" method="post" onsubmit="return confirm('Are you sure you want to delete your profile?');">
+    <input type="hidden" name="email" value="@Model.Email" />
+    <button type="submit" class="btn btn-danger">Delete Profile</button>
+</form>
+
+<a asp-action="AvailableAssessments" asp-controller="Assessments" class="btn btn-info">View Available Assessments</a>
+<a asp-action="LearnerTakenAssessments" asp-controller="TakenAssessments" asp-route-learnerId="@Model.LearnerId" class="btn btn-info">View My Taken Assessments</a>
+
 
 <a asp-action="EnrolledCourses"
    asp-controller="Courses"
@@ -64,3 +179,4 @@
    class="btn btn-success mt-3">
     View Enrolled Courses
 </a>
+ *@

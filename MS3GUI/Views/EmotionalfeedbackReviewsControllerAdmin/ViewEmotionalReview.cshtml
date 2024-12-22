@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MS3GUI.Models.EmotionalfeedbackReview>
+
+<h2>Emotional Feedback Reviews</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Feedback ID</th>
+            <th>Instructor ID</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+
+        {
+            <tr>
+                <td>@review.FeedbackId</td>
+                <td>@review.InstructorId</td>
+                <td>@review.Feedback</td>
+            </tr>
+        }
+    </tbody>
+</table>

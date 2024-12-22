@@ -23,3 +23,32 @@
         }
     </tbody>
 </table>
+
+
+
+
+@* @model IEnumerable<EnrolledCoursesViewModel>
+
+<h2>Enrolled Courses</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Enrollment Date</th>
+            <th>Completion Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.CourseName</td>
+                <td>@(course.EnrollmentDate.HasValue ? course.EnrollmentDate.Value.ToString("MM/dd/yyyy") : "No Date")</td>
+                <td>@(course.CompletionDate.HasValue ? course.CompletionDate.Value.ToString("MM/dd/yyyy") : "Not completed")</td>
+                <td>@course.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

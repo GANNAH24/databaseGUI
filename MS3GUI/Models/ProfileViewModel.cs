@@ -23,7 +23,7 @@
         public string? AdminName { get; set; }
         // New property for LearnerId
         public int LearnerId { get; set; }
-   public int InstructorId { get; set; }
+        public int InstructorId { get; set; }
 
         public int AdminId { get; set; }
     }

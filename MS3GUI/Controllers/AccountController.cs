@@ -53,74 +53,6 @@ namespace MS3GUI.Controllers
 
 
 
-        /* [HttpGet]
-         public async Task<IActionResult> ProfileLearners(string email)
-         {
-          *//*   // Get LearnerId from session
-             int? learnerId = HttpContext.Session.GetInt32("LearnerId");
-             if (learnerId == null)
-             {
-                 // If LearnerId is not in the session, redirect to login
-                 return RedirectToAction("RegisterLearner");
-             }*//*
-
-             if (string.IsNullOrEmpty(email))
-             {
-                 return BadRequest("Email is required.");
-             }
-
-             var learner = await _context.Learners
-                 .Where(l => l.Email == email)
-                 .Select(l => new ProfileViewModel
-                 {
-                     FirstName = l.FirstName,
-                     LastName = l.LastName,
-                     Gender = l.Gender,
-                     BirthDate = l.BirthDate,
-                     Country = l.Country,
-                     CulturalBackground = l.CulturalBackground,
-                     Email = l.Email
-                 })
-                 .FirstOrDefaultAsync();
-
-             if (learner == null)
-             {
-                 return NotFound("Learner not found.");
-             }
-
-             return View(learner);
-         }*/
-
-        // [HttpGet]
-        //public async Task<IActionResult> ProfileLearners(string email)
-        //{
-        //    if (string.IsNullOrEmpty(email))
-        //    {
-        //        return BadRequest("Email is required.");
-        //    }
-
-        //    var learner = await _context.Learners
-        //        .Where(l => l.Email == email)
-        //        .Select(l => new ProfileViewModel
-        //        {
-        //            FirstName = l.FirstName,
-        //            LastName = l.LastName,
-        //            Gender = l.Gender,
-        //            BirthDate = l.BirthDate,
-        //            Country = l.Country,
-        //            CulturalBackground = l.CulturalBackground,
-        //            Email = l.Email
-        //        })
-        //        .FirstOrDefaultAsync();
-
-        //    if (learner == null)
-        //    {
-        //        return NotFound("Learner not found.");
-        //    }
-
-        //    return View(learner);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> ProfileInstructor(string email)
         {
@@ -211,24 +143,26 @@ namespace MS3GUI.Controllers
 
 
 
+
+
         [HttpPost]
-        public async Task<IActionResult> DeleteLearnerProfile(string email, int learnerId)
+        public async Task<IActionResult> DeleteLearnerProfile(string email)
         {
-            if (string.IsNullOrEmpty(email) || learnerId == 0)
+            if (string.IsNullOrEmpty(email))
             {
-                return Content("Email or Learner ID Not Found");
+                return Content("Email Not Found");
             }
 
-            var learner = await _context.Learners.FirstOrDefaultAsync(l => l.Email == email && l.LearnerId == learnerId);
+            var learner = await _context.Learners.FirstOrDefaultAsync(l => l.Email == email);
             if (learner == null)
             {
-                return Content("Email or Learner ID Not Found");
+                return Content("Email Not Found");
             }
 
-        //    _context.Learners.Remove(learner);
-        //    await _context.SaveChangesAsync();
+            _context.Learners.Remove(learner);
+            await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Register", "Account");
         }
 
         [HttpPost]
@@ -299,49 +233,29 @@ namespace MS3GUI.Controllers
             return View(model);
         }
 
+        
+
+
         [HttpPost]
         public async Task<IActionResult> DeleteLearner(string learnerEmail)
         {
             if (string.IsNullOrEmpty(learnerEmail))
             {
-                return BadRequest("Learner email is required.");
+                return Json(new { message = "Learner email is required" });
             }
 
-            var learner = await _context.Learners
-                .FirstOrDefaultAsync(l => l.Email == learnerEmail);
-
+            var learner = await _context.Learners.FirstOrDefaultAsync(l => l.Email == learnerEmail);
             if (learner == null)
             {
-                return NotFound("Learner not found.");
+                return Json(new { message = "Learner not found" });
             }
 
             _context.Learners.Remove(learner);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("ProfileAdmin");
+            return Json(new { message = "Learner deleted" });
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteLearner(string learnerEmail)
-        //{
-        //    if (string.IsNullOrEmpty(learnerEmail))
-        //    {
-        //        return NotFound("Learner email is required.");
-        //    }
-
-        //    var learner = await _context.Learners
-        //        .FirstOrDefaultAsync(l => l.Email == learnerEmail);
-
-        //    if (learner == null)
-        //    {
-        //        return NotFound("Learner not found.");
-        //    }
-
-        //    _context.Learners.Remove(learner);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("ProfileAdmin");
-        //}
 
 
         [HttpPost]
@@ -349,137 +263,21 @@ namespace MS3GUI.Controllers
         {
             if (string.IsNullOrEmpty(instructorEmail))
             {
-                return BadRequest("Instructor email is required.");
+                return Json(new { message = "Instructor email is required" });
             }
 
-            var instructor = await _context.Instructors
-                .FirstOrDefaultAsync(i => i.Email == instructorEmail);
-
+            var instructor = await _context.Instructors.FirstOrDefaultAsync(i => i.Email == instructorEmail);
             if (instructor == null)
             {
-                return NotFound("Instructor not found.");
+                return Json(new { message = "Instructor not found" });
             }
 
             _context.Instructors.Remove(instructor);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("ProfileAdmin");
+            return Json(new { message = "Instructor deleted" });
         }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(string instructorEmail)
-        //{
-        //    if (string.IsNullOrEmpty(instructorEmail))
-        //    {
-        //        return NotFound("Instructor email is required.");
-        //    }
-
-        //    var instructor = await _context.Instructors
-        //        .FirstOrDefaultAsync(i => i.Email == instructorEmail);
-
-        //    if (instructor == null)
-        //    {
-        //        return NotFound("Instructor not found.");
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("ProfileAdmin");
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(string instructorEmail)
-        //{
-        //    if (string.IsNullOrEmpty(instructorEmail))
-        //    {
-        //        return NotFound("Instructor email is required.");
-        //    }
-
-        //    var instructor = await _context.Instructors
-        //        .FirstOrDefaultAsync(i => i.Email == instructorEmail);
-
-        //    if (instructor == null)
-        //    {
-        //        return NotFound("Instructor not found.");
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("ProfileAdmin");
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(string instructorEmail)
-        //{
-        //    if (string.IsNullOrEmpty(instructorEmail))
-        //    {
-        //        return BadRequest("Instructor email is required.");
-        //    }
-
-        //    var instructor = await _context.Instructors
-        //        .FirstOrDefaultAsync(i => i.Email.ToLower() == instructorEmail.ToLower());
-
-        //    if (instructor == null)
-        //    {
-        //        return NotFound("Instructor not found.");
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    var userEmail = User.Identity?.Name;
-        //    if (string.IsNullOrEmpty(userEmail))
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-
-        //    return RedirectToAction("ProfileAdmin", new { email = userEmail });
-        //}
-
-
-        //    [HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(string instructorEmail)
-        //{
-        //    if (string.IsNullOrEmpty(instructorEmail))
-        //    {
-        //        return BadRequest("Instructor email is required.");
-        //    }
-
-        //    var instructor = await _context.Instructors
-        //        .FirstOrDefaultAsync(i => i.Email == instructorEmail);
-
-        //    if (instructor == null)
-        //    {
-        //        return NotFound("Instructor not found.");
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("ProfileAdmin", new { email = User.Identity.Name });
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(string instructorEmail)
-        //{
-        //    var instructor = await _context.Instructors
-        //       .FirstOrDefaultAsync(i => i.Email == instructorEmail);
-        //    if (instructor == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(ProfileAdmin), new { email = User.Identity.Name });
-        //}
-
-
-
+        
         // This action serves the initial registration page with role selection buttons
         public IActionResult Register()
         {
@@ -506,6 +304,24 @@ namespace MS3GUI.Controllers
             {
                 return RedirectToAction("Register"); // Default return if no role is selected
             }
+        }
+
+        [HttpGet]
+        public IActionResult CreateDiscussionForum()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDiscussionForum(DiscussionForum model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.DiscussionForums.Add(model);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Profile", new { email = User.Identity.Name });
+            }
+            return View(model);
         }
 
         // This action handles Learner Registration
@@ -709,62 +525,6 @@ namespace MS3GUI.Controllers
 
 
 
-
-
-
-
-        /*   
-           public async Task<IActionResult> Login(LoginViewModel model)
-           {
-               if (ModelState.IsValid)
-               {
-                   try
-                   {
-                       // Check if the learner exists and the password matches
-                       var learner = await _context.Learners
-                           .FirstOrDefaultAsync(l => l.Email.ToLower() == model.Email.ToLower());
-
-                       if (learner != null && learner.Password == model.Password)
-                       {
-                           // Successful login, redirect to the learner's profile
-                           return RedirectToAction("Profile", new { email = learner.Email });
-                       }
-
-                       // Check if the instructor exists and the password matches
-                       var instructor = await _context.Instructors
-                           .FirstOrDefaultAsync(i => i.Email.ToLower() == model.Email.ToLower());
-
-                       if (instructor != null && instructor.Password == model.Password)
-                       {
-                           // Successful login for instructor, redirect to the instructor's dashboard
-                           return RedirectToAction("Profile", new { email = instructor.Email });
-                       }
-
-                       var admin = await _context.Admins
-                .FirstOrDefaultAsync(a => a.Email.ToLower() == model.Email.ToLower());
-
-                       if (admin != null && admin.Password == model.Password)
-                       {
-                           // Successful login for admin, redirect to admin's dashboard
-                           return RedirectToAction("Profile", new { email = admin.Email });
-                       }
-
-
-                       // If no match, show an error message
-                       ViewData["ErrorMessage"] = "Invalid email or password.";
-                   }
-                   catch (Exception ex)
-                   {
-                       // Handle unexpected errors
-                       ViewData["ErrorMessage"] = "An error occurred: " + ex.Message;
-                   }
-               }
-
-               // Return the login view with error message if validation fails
-               return View(model);
-           }*/
-
-
         [HttpGet]
         public IActionResult RegisterAdmin()
         {
@@ -808,65 +568,6 @@ namespace MS3GUI.Controllers
         }
 
 
-
-
-
-
-        /*  public IActionResult Login(string email, string password)
-          {
-              // Query the Learner table to find a matching email and password
-              var learner = _context.Learners
-                  .FirstOrDefault(l => l.Email == email && l.Password == password);
-
-              if (learner != null)
-              {
-                  // Successful login, redirect to profile or dashboard
-                  return RedirectToAction("Profile", new { email = learner.Email });
-              }
-
-              // If no match is found, show an error message
-              ViewData["ErrorMessage"] = "Invalid email or password.";
-              return View();
-          }
-
-
-          [HttpPost]
-          public IActionResult Login(LoginViewModel model)
-          {
-              if (ModelState.IsValid)
-              {
-                  var learner = _context.Learners
-                      .FirstOrDefault(l => l.Email == model.Email && l.Password == model.Password);
-
-                  if (learner != null)
-                  {
-                      return RedirectToAction("Profile", new { email = learner.Email });
-                  }
-
-                  ViewData["ErrorMessage"] = "Invalid email or password.";
-              }
-
-              return View(model);
-          }*/
-
-
-        //[Authorize(Roles = "Admin")]
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteInstructor(int instructorId)
-        //{
-        //    var instructor = await _context.Instructors.FindAsync(instructorId);
-        //    if (instructor == null)
-        //    {
-        //        TempData["StatusMessage"] = "Instructor not found.";
-        //        return RedirectToAction("Profile", new { email = User.Identity.Name });
-        //    }
-
-        //    _context.Instructors.Remove(instructor);
-        //    await _context.SaveChangesAsync();
-
-        //    TempData["StatusMessage"] = "Instructor account has been permanently removed.";
-        //    return RedirectToAction("Profile", new { email = User.Identity.Name });
-        //}
 
     } 
     

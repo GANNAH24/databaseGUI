@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<MS3GUI.Models.Course>
-
 <h1>Enroll in Course</h1>
 
-<form method="post">
+<form method="post" asp-action="EnrollInCourse">
     <div>
-        <label for="CourseId">Course</label>
-        <select id="CourseId" name="CourseId">
+        <label for="CourseId">Select a Course</label>
+        <select id="CourseId" name="courseId">
             @foreach (var course in Model)
             {
                 <option value="@course.CourseId">@course.Title</option>
@@ -15,3 +14,4 @@
 
     <button type="submit">Enroll</button>
 </form>
+

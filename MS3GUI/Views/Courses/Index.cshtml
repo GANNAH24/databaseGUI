@@ -46,6 +46,103 @@
                     <!-- Link to view previous courses -->
                     <a href="@Url.Action("ViewPreviousCourses", "Courses", new { courseId = course.CourseId })" class="btn btn-info">Previous Courses</a>
                 </td>
+                <td>
+                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-info">
+                        View Details
+                    </a>
+                    <!-- Enroll Now Button -->
+                    <button class="btn btn-success enroll-btn" data-course-id="@course.CourseId">Enroll Now</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- JavaScript to handle the Enroll Now button click -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".enroll-btn").click(function () {
+            var courseId = $(this).data("course-id");
+
+            // Send the courseId to the backend to process the enrollment
+            $.ajax({
+                url: '@Url.Action("EnrollInCourse", "Courses")',  // Adjust controller and action
+                type: 'POST',
+                data: { courseId: courseId },
+                success: function (response) {
+                    // Show success message after enrollment
+                    alert("You have been enrolled successfully!");
+                },
+                error: function () {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+@* @model IEnumerable<MS3GUI.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LearningObjective)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditPoints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DifficultyLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cdescription)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.LearningObjective</td>
+                <td>@course.CreditPoints</td>
+                <td>@course.DifficultyLevel</td>
+                <td>@course.Cdescription</td>
+                <td>
+                    <!-- Link to view modules -->
+                    <a href="@Url.Action("Modules", "Courses", new { id = course.CourseId })" class="btn btn-primary">View Modules</a>
+                    <!-- Link to view previous courses -->
+                    <a href="@Url.Action("ViewPreviousCourses", "Courses", new { courseId = course.CourseId })" class="btn btn-info">Previous Courses</a>
+                </td>
+                <td>
+                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-info">
+                        View Details
+                    </a>
+                </td>
+
             </tr>
         }
     </tbody>
@@ -56,9 +153,7 @@
 
 
 
-
-
-
+ *@
 
 
 @* @model IEnumerable<MS3GUI.Models.Course>
