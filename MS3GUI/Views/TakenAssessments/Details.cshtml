@@ -1,4 +1,8 @@
-﻿@model MS3GUI.Models.TakenAssessment
+﻿
+
+
+
+@* @model MS3GUI.Models.TakenAssessment
 
 <h1>Details</h1>
 
@@ -29,3 +33,61 @@
 </div>
 
 
+ *@
+ @model TakenAssessmentDetailsViewModel
+
+<h2>Assessment Details</h2>
+
+<div>
+    <h4>Assessment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Assessment ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.TakenAssessment.AssessmentId
+        </dd>
+        <dt class="col-sm-2">
+            Score
+        </dt>
+        <dd class="col-sm-10">
+            @Model.TakenAssessment.Score
+        </dd>
+        <dt class="col-sm-2">
+            Learner ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.TakenAssessment.LearnerId
+        </dd>
+    </dl>
+</div>
+
+<h3>Performance Analysis</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Assessment Title</th>
+            <th>Total Marks</th>
+            <th>Marks Scored</th>
+            <th>Weightage</th>
+            <th>Passing Marks</th>
+            <th>Status</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var analysis in Model.PerformanceAnalysis)
+        {
+            <tr>
+                <td>@analysis.AssessmentTitle</td>
+                <td>@analysis.TotalMarks</td>
+                <td>@analysis.MarksScored</td>
+                <td>@analysis.Weightage</td>
+                <td>@analysis.PassingMarks</td>
+                <td>@analysis.Status</td>
+                <td>@analysis.Percentage</td>
+            </tr>
+        }
+    </tbody>
+</table>

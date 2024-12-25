@@ -68,9 +68,16 @@
 
 <a asp-controller="Courses" asp-action="Index" class="btn btn-primary">
     View Available Courses
+
 </a>
 
+<a asp-controller="Assessments" asp-action="ReviewTakenAssessments" asp-route-learnerId="@Model.LearnerId" class="btn btn-primary">
+    Review Taken Assessments
+</a>
 
+<a asp-controller="Assessments" asp-action="AssessmentAnalytics" asp-route-courseId="1" asp-route-moduleId="1" class="btn btn-primary">
+    View Assessment Analytics
+</a>
 
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MS3GUI.Models;
 
@@ -108,6 +109,10 @@ public partial class DatabaseProjectContext : DbContext
 
 
     public virtual DbSet<GoalReminder> GoalReminders { get; set; }
+    public DbSet<PerformanceAnalysis> PerformanceAnalyses { get; set; } //NEW
+    public DbSet<AssessmentAnalyticsViewModel> AssessmentAnalytics { get; set; }//NEW
+    public virtual DbSet<ReceivedNotification> ReceivedNotifications { get; set; }//NEW
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -117,6 +122,17 @@ public partial class DatabaseProjectContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Configure composite primary key for ReceivedNotification
+        modelBuilder.Entity<ReceivedNotification>()
+            .HasKey(rn => new { rn.NotificationId, rn.LearnerId });
+
+
+        modelBuilder.Entity<AssessmentAnalyticsViewModel>().HasNoKey();//NEW
+
+        modelBuilder.Entity<PerformanceAnalysis>().HasNoKey();//NEW
+        modelBuilder.Entity<HighestGrade>().HasNoKey().ToView("HighestGrade");//NEW
+
+
         modelBuilder.Entity<GoalReminder>().HasNoKey();
         modelBuilder.Entity<StatusMessage>().HasNoKey();
 
@@ -150,34 +166,34 @@ public partial class DatabaseProjectContext : DbContext
 
         modelBuilder.Entity<Assessment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Assessme__3214EC27BA7546EE");
+               entity.HasKey(e => e.Id).HasName("PK__Assessme__3214EC27BA7546EE");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Adescription)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Atype)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CourseId).HasColumnName("CourseID");
-            entity.Property(e => e.Criteria)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("criteria");
-            entity.Property(e => e.ModuleId).HasColumnName("ModuleID");
-            entity.Property(e => e.PassingMarks).HasColumnName("passing_marks");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("title");
-            entity.Property(e => e.TotalMarks).HasColumnName("total_marks");
-            entity.Property(e => e.Weightage).HasColumnName("weightage");
+        entity.Property(e => e.Id).HasColumnName("ID");
+        entity.Property(e => e.Adescription)
+            .HasMaxLength(50)
+            .IsUnicode(false);
+        entity.Property(e => e.Atype)
+            .HasMaxLength(50)
+            .IsUnicode(false);
+        entity.Property(e => e.CourseId).HasColumnName("CourseID");
+        entity.Property(e => e.Criteria)
+            .HasMaxLength(50)
+            .IsUnicode(false)
+            .HasColumnName("criteria");
+        entity.Property(e => e.ModuleId).HasColumnName("ModuleID");
+        entity.Property(e => e.PassingMarks).HasColumnName("passing_marks");
+        entity.Property(e => e.Title)
+            .HasMaxLength(50)
+            .IsUnicode(false)
+            .HasColumnName("title");
+        entity.Property(e => e.TotalMarks).HasColumnName("total_marks");
+        entity.Property(e => e.Weightage).HasColumnName("weightage");
 
-            entity.HasOne(d => d.Module).WithMany(p => p.Assessments)
-                .HasForeignKey(d => new { d.ModuleId, d.CourseId })
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Assessments__10566F31");
-        });
+        entity.HasOne(d => d.Module).WithMany(p => p.Assessments)
+            .HasForeignKey(d => new { d.ModuleId, d.CourseId })
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("FK__Assessments__10566F31");
+    });
 
         modelBuilder.Entity<Badge>(entity =>
         {
@@ -434,21 +450,21 @@ public partial class DatabaseProjectContext : DbContext
                 .HasConstraintName("FK__HealthCondition__412EB0B6");
         });
 
-        modelBuilder.Entity<HighestGrade>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("HighestGrade");
+        //modelBuilder.Entity<HighestGrade>(entity =>
+        //{
+        //    entity
+        //        .HasNoKey()
+        //        .ToView("HighestGrade");
 
-            entity.Property(e => e.CourseId).HasColumnName("CourseID");
-            entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("title");
-        });
+        //    entity.Property(e => e.CourseId).HasColumnName("CourseID");
+        //    entity.Property(e => e.Id)
+        //        .ValueGeneratedOnAdd()
+        //        .HasColumnName("ID");
+        //    entity.Property(e => e.Title)
+        //        .HasMaxLength(50)
+        //        .IsUnicode(false)
+        //        .HasColumnName("title");
+        //});
 
         modelBuilder.Entity<Instructor>(entity =>
         {
@@ -1072,6 +1088,53 @@ public partial class DatabaseProjectContext : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
+    public async Task<List<PerformanceAnalysis>> GetPerformanceAnalysisAsync(int learnerId)
+    {
+        return await PerformanceAnalyses
+            .FromSqlRaw("EXEC AssessmentAnalysis @LearnerID = {0}", learnerId)
+            .ToListAsync();
+    }
+    //public async Task AddAssessmentAsync(AddAssessmentModel model)
+    //{
+    //    var parameters = new[]
+    //    {
+    //        new SqlParameter("@Atype", model.Atype ?? (object)DBNull.Value),
+    //        new SqlParameter("@TotalMarks", model.TotalMarks ?? (object)DBNull.Value),
+    //        new SqlParameter("@PassingMarks", model.PassingMarks ?? (object)DBNull.Value),
+    //        new SqlParameter("@Criteria", model.Criteria ?? (object)DBNull.Value),
+    //        new SqlParameter("@Weightage", model.Weightage ?? (object)DBNull.Value),
+    //        new SqlParameter("@Adescription", model.Adescription ?? (object)DBNull.Value),
+    //        new SqlParameter("@Title", model.Title ?? (object)DBNull.Value),
+    //        new SqlParameter("@ModuleId", model.ModuleId ?? (object)DBNull.Value),
+    //        new SqlParameter("@CourseId", model.CourseId ?? (object)DBNull.Value)
+    //    };
+
+    //    await Database.ExecuteSqlRawAsync(
+    //        "EXEC AddAssessment @Atype, @TotalMarks, @PassingMarks, @Criteria, @Weightage, @Adescription, @Title, @ModuleId, @CourseId",
+    //        parameters);
+    //}
+
+    public async Task AddNewAssessmentAsync(Assessment assessment)
+    {
+        var newAssessment = new Assessment
+        {
+            Atype = assessment.Atype,
+            TotalMarks = assessment.TotalMarks,
+            PassingMarks = assessment.PassingMarks,
+            Criteria = assessment.Criteria,
+            Weightage = assessment.Weightage,
+            Adescription = assessment.Adescription,
+            Title = assessment.Title,
+            ModuleId = assessment.ModuleId,
+            CourseId = assessment.CourseId
+        };
+
+        // Add the new assessment to the context
+        Assessments.Add(newAssessment);
+
+        // Save changes to the database asynchronously
+        await SaveChangesAsync();
+    }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
 public DbSet<MS3GUI.Models.User> User { get; set; } = default!;

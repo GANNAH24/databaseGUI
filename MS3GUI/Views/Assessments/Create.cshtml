@@ -11,7 +11,11 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Atype" class="control-label"></label>
                 <input asp-for="Atype" class="form-control" />
@@ -43,16 +47,10 @@
                 <span asp-validation-for="Adescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ModuleId" class="control-label"></label>
                 <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.Modules"></select>
                 <span asp-validation-for="ModuleId" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -65,7 +63,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

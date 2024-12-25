@@ -26,4 +26,6 @@ public partial class Course
     public virtual ICollection<Ranking> Rankings { get; set; } = new List<Ranking>();
 
     public virtual ICollection<Instructor> Instructors { get; set; } = new List<Instructor>();
+    public virtual ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
+
 }

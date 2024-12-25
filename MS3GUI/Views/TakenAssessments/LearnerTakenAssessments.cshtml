@@ -1,4 +1,10 @@
-﻿@model IEnumerable<MS3GUI.Models.TakenAssessment>
+﻿
+
+
+
+
+
+@model IEnumerable<MS3GUI.Models.TakenAssessment>
 
 @{
     ViewData["Title"] = "Learner Taken Assessments";
@@ -35,9 +41,7 @@
                     @Html.DisplayFor(modelItem => item.LearnerId)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-assessmentId="@item.AssessmentId" asp-route-learnerId="@item.LearnerId">Edit</a> |
                     <a asp-action="Details" asp-route-assessmentId="@item.AssessmentId" asp-route-learnerId="@item.LearnerId">Details</a> |
-                    <a asp-action="Delete" asp-route-assessmentId="@item.AssessmentId" asp-route-learnerId="@item.LearnerId">Delete</a>
                 </td>
             </tr>
         }
@@ -48,157 +52,3 @@
 
 
 
-
-
-
-
-@* @model IEnumerable<MS3GUI.Models.TakenAssessment>
-
-@{
-    ViewData["Title"] = "Learner Taken Assessments";
-}
-
-<h2>Learner Taken Assessments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().TakenAssessmentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().AssessmentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().LearnerId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TakenAssessmentId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Score)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssessmentId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LearnerId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.TakenAssessmentId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TakenAssessmentId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TakenAssessmentId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-}
-
-
-
-
-
-
-
-
-@* @model IEnumerable<MS3GUI.Models.TakenAssessment>
-
-@{
-    ViewData["Title"] = "Learner Taken Assessments";
-}
-
-<h2>Learner Taken Assessments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().AssessmentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().LearnerId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Score)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssessmentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LearnerId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-@* @model IEnumerable<MS3GUI.Models.TakenAssessment>
-
-@{
-    ViewData["Title"] = "My Taken Assessments";
-}
-
-<h2>My Taken Assessments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Assessment Title</th>
-            <th>Score</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var takenAssessment in Model)
-        {
-            <tr>
-                <td>@takenAssessment.Assessment.Title</td>
-                <td>@takenAssessment.Score</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@takenAssessment.Id" class="btn btn-info">View Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>*@
- 

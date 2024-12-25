@@ -1,0 +1,36 @@
+﻿@model IEnumerable<MS3GUI.Models.TakenAssessment>
+
+<h2>Review Taken Assessments</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Learner ID</th>
+            <th>Learner Name</th>
+            <th>Assessment ID</th>
+            <th>Assessment Title</th>
+            <th>Score</th>
+            <th>Update Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.LearnerId</td>
+                <td>@item.Learner.FirstName @item.Learner.LastName</td>
+                <td>@item.AssessmentId</td>
+                <td>@item.Assessment.Title</td>
+                <td>@item.Score</td>
+                <td>
+                    <form asp-action="UpdateTakenAssessmentScore" method="post">
+                        <input type="hidden" name="takenAssessmentId" value="@item.AssessmentId" />
+                        <input type="hidden" name="learnerId" value="@item.LearnerId" />
+                        <input type="number" name="newScore" value="@item.Score" />
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

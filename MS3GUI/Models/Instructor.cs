@@ -21,5 +21,6 @@ namespace MS3GUI.Models
         public virtual ICollection<Pathreview> Pathreviews { get; set; } = new List<Pathreview>();
 
         public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+
     }
 }

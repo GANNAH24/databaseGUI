@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MS3GUI.Models.AssessmentAnalyticsViewModel>
+
+<h2>Assessment Analytics</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Assessment Title</th>
+            <th>Module ID</th>
+            <th>Average Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>@item.AssessmentTitle</td>
+                <td>@item.ModuleId</td>
+                <td>@item.AverageScore</td>
+            </tr>
+        }
+    </tbody>
+</table>

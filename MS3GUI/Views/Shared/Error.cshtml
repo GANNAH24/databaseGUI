@@ -1,10 +1,15 @@
-﻿@model ErrorViewModel
+﻿@model MS3GUI.Models.ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
 
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+}
 
 @if (Model.ShowRequestId)
 {
